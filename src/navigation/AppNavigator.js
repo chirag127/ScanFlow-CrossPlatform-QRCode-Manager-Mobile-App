@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import * as Linking from "expo-linking";
 import { useAuth } from "../context/AuthContext";
 import { theme } from "../constants/theme";
 import {
@@ -12,7 +13,12 @@ import {
     WhatsAppLoginScreen,
 } from "../screens/auth";
 import { ProfileScreen } from "../screens/profile";
-import { HomeScreen } from "../screens/home";
+import {
+    HomeScreen,
+    QRScannerScreen,
+    RestaurantDetailScreen,
+} from "../screens/home";
+import * as navigationTypes from "./navigationTypes";
 
 // Create navigators
 const Stack = createNativeStackNavigator();
@@ -35,40 +41,89 @@ const PlaceholderScreen = ({ route }) => (
  */
 const AuthNavigator = () => (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        <Stack.Screen name="WhatsAppLogin" component={WhatsAppLoginScreen} />
+        <Stack.Screen
+            name={navigationTypes.AUTH_STACK.LOGIN}
+            component={LoginScreen}
+        />
+        <Stack.Screen
+            name={navigationTypes.AUTH_STACK.REGISTER}
+            component={RegisterScreen}
+        />
+        <Stack.Screen
+            name={navigationTypes.AUTH_STACK.FORGOT_PASSWORD}
+            component={ForgotPasswordScreen}
+        />
+        <Stack.Screen
+            name={navigationTypes.AUTH_STACK.WHATSAPP_LOGIN}
+            component={WhatsAppLoginScreen}
+        />
     </Stack.Navigator>
 );
 
 /**
  * Home Navigator - Handles home tab screens
  */
-const HomeNavigator = () => (
-    <Stack.Navigator>
-        <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            options={{ title: "Home" }}
-        />
-        <Stack.Screen
-            name="RestaurantDetail"
-            component={PlaceholderScreen}
-            options={{ title: "Restaurant" }}
-        />
-        <Stack.Screen
-            name="MenuScreen"
-            component={PlaceholderScreen}
-            options={{ title: "Menu" }}
-        />
-        <Stack.Screen
-            name="DishDetail"
-            component={PlaceholderScreen}
-            options={{ title: "Dish" }}
-        />
-    </Stack.Navigator>
-);
+const HomeNavigator = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name={navigationTypes.HOME_STACK.HOME_SCREEN}
+                component={HomeScreen}
+                options={({ navigation }) => ({
+                    title: "Home",
+                    headerRight: () => (
+                        <Ionicons
+                            name="scan-outline"
+                            size={24}
+                            color={theme.colors.primary}
+                            style={{ marginRight: 16 }}
+                            onPress={() =>
+                                navigation.navigate(
+                                    navigationTypes.HOME_STACK.QR_SCANNER
+                                )
+                            }
+                        />
+                    ),
+                })}
+            />
+            <Stack.Screen
+                name={navigationTypes.HOME_STACK.RESTAURANT_DETAIL}
+                component={RestaurantDetailScreen}
+                options={({ route }) => ({
+                    title:
+                        route.params?.restaurant?.restaurantName ||
+                        "Restaurant",
+                    headerBackTitle: "Back",
+                })}
+            />
+            <Stack.Screen
+                name={navigationTypes.HOME_STACK.MENU_SCREEN}
+                component={PlaceholderScreen}
+                options={{
+                    title: "Menu",
+                    headerBackTitle: "Restaurant",
+                }}
+            />
+            <Stack.Screen
+                name={navigationTypes.HOME_STACK.DISH_DETAIL}
+                component={PlaceholderScreen}
+                options={({ route }) => ({
+                    title: route.params?.dish?.dishName || "Dish",
+                    headerBackTitle: "Menu",
+                })}
+            />
+            <Stack.Screen
+                name={navigationTypes.HOME_STACK.QR_SCANNER}
+                component={QRScannerScreen}
+                options={{
+                    title: "Scan QR Code",
+                    headerShown: false,
+                    presentation: "fullScreenModal",
+                }}
+            />
+        </Stack.Navigator>
+    );
+};
 
 /**
  * Search Navigator - Handles search tab screens
@@ -171,15 +226,15 @@ const MainNavigator = () => (
             tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
 
-                if (route.name === "Home") {
+                if (route.name === navigationTypes.MAIN_TABS.HOME) {
                     iconName = focused ? "home" : "home-outline";
-                } else if (route.name === "Search") {
+                } else if (route.name === navigationTypes.MAIN_TABS.SEARCH) {
                     iconName = focused ? "search" : "search-outline";
-                } else if (route.name === "Cart") {
+                } else if (route.name === navigationTypes.MAIN_TABS.CART) {
                     iconName = focused ? "cart" : "cart-outline";
-                } else if (route.name === "Orders") {
+                } else if (route.name === navigationTypes.MAIN_TABS.ORDERS) {
                     iconName = focused ? "list" : "list-outline";
-                } else if (route.name === "Profile") {
+                } else if (route.name === navigationTypes.MAIN_TABS.PROFILE) {
                     iconName = focused ? "person" : "person-outline";
                 }
 
@@ -190,11 +245,41 @@ const MainNavigator = () => (
             headerShown: false,
         })}
     >
-        <Tab.Screen name="Home" component={HomeNavigator} />
-        <Tab.Screen name="Search" component={SearchNavigator} />
-        <Tab.Screen name="Cart" component={CartNavigator} />
-        <Tab.Screen name="Orders" component={OrdersNavigator} />
-        <Tab.Screen name="Profile" component={ProfileNavigator} />
+        <Tab.Screen
+            name={navigationTypes.MAIN_TABS.HOME}
+            component={HomeNavigator}
+            options={{
+                title: "Home",
+            }}
+        />
+        <Tab.Screen
+            name={navigationTypes.MAIN_TABS.SEARCH}
+            component={SearchNavigator}
+            options={{
+                title: "Search",
+            }}
+        />
+        <Tab.Screen
+            name={navigationTypes.MAIN_TABS.CART}
+            component={CartNavigator}
+            options={{
+                title: "Cart",
+            }}
+        />
+        <Tab.Screen
+            name={navigationTypes.MAIN_TABS.ORDERS}
+            component={OrdersNavigator}
+            options={{
+                title: "Orders",
+            }}
+        />
+        <Tab.Screen
+            name={navigationTypes.MAIN_TABS.PROFILE}
+            component={ProfileNavigator}
+            options={{
+                title: "Profile",
+            }}
+        />
     </Tab.Navigator>
 );
 
@@ -209,6 +294,80 @@ const LoadingScreen = () => (
 );
 
 /**
+ * Configure deep linking
+ */
+const linking = {
+    prefixes: [
+        // Add your app's deep link prefixes here
+        "qrsay://",
+        "https://qrsay.com",
+        "https://*.qrsay.com",
+        Linking.createURL("/"),
+    ],
+    config: {
+        // Configuration for matching screens with paths
+        screens: {
+            [navigationTypes.ROOT_STACK.MAIN]: {
+                screens: {
+                    [navigationTypes.MAIN_TABS.HOME]: {
+                        screens: {
+                            [navigationTypes.HOME_STACK.RESTAURANT_DETAIL]:
+                                "restaurant/:restaurantUrl",
+                            [navigationTypes.HOME_STACK.QR_SCANNER]: "scan",
+                        },
+                    },
+                    [navigationTypes.MAIN_TABS.SEARCH]: "search",
+                    [navigationTypes.MAIN_TABS.CART]: "cart",
+                    [navigationTypes.MAIN_TABS.ORDERS]: {
+                        screens: {
+                            [navigationTypes.ORDERS_STACK.ORDER_TRACKING]:
+                                "order/:orderId",
+                        },
+                    },
+                    [navigationTypes.MAIN_TABS.PROFILE]: "profile",
+                },
+            },
+            [navigationTypes.ROOT_STACK.AUTH]: {
+                screens: {
+                    [navigationTypes.AUTH_STACK.LOGIN]: "login",
+                    [navigationTypes.AUTH_STACK.REGISTER]: "register",
+                },
+            },
+        },
+    },
+    // Custom function to get the initial URL
+    async getInitialURL() {
+        // First, check if the app was opened via a deep link
+        const url = await Linking.getInitialURL();
+
+        if (url != null) {
+            return url;
+        }
+
+        // If no deep link was used, check if there's an initial notification
+        // This is for handling push notifications that open the app
+        // You can add this if you implement push notifications
+
+        return null;
+    },
+    // Subscribe to URL updates
+    subscribe(listener) {
+        // Listen to incoming links from deep linking
+        const linkingSubscription = Linking.addEventListener(
+            "url",
+            ({ url }) => {
+                listener(url);
+            }
+        );
+
+        return () => {
+            // Clean up the event listeners
+            linkingSubscription.remove();
+        };
+    },
+};
+
+/**
  * Root Navigator - Handles authentication state
  */
 const RootNavigator = () => {
@@ -219,11 +378,21 @@ const RootNavigator = () => {
     }
 
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            linking={linking}
+            fallback={<LoadingScreen />}
+        >
             {isAuthenticated || isGuest ? (
-                <Stack.Screen name="Main" component={MainNavigator} />
+                <Stack.Screen
+                    name={navigationTypes.ROOT_STACK.MAIN}
+                    component={MainNavigator}
+                />
             ) : (
-                <Stack.Screen name="Auth" component={AuthNavigator} />
+                <Stack.Screen
+                    name={navigationTypes.ROOT_STACK.AUTH}
+                    component={AuthNavigator}
+                />
             )}
         </Stack.Navigator>
     );

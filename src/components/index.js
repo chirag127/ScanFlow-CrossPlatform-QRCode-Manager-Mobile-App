@@ -3,7 +3,7 @@
  */
 
 // Cards
-export { default as RestaurantCard } from "./RestaurantCard";
+export { RestaurantCard } from "./restaurant";
 export { default as DishCard } from "./DishCard";
 export { default as CartItem } from "./CartItem";
 export { default as OrderCard } from "./OrderCard";
