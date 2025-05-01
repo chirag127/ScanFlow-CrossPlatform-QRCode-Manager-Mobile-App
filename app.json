@@ -1,29 +1,51 @@
 {
   "expo": {
-    "name": "qrsay-user-frontend-react-native-expo-app",
-    "slug": "qrsay-user-frontend-react-native-expo-app",
+    "name": "QRSay User",
+    "slug": "qrsay-user",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "icon": "./src/assets/logo.png",
+    "scheme": "qrsayuser",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./src/assets/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FF8C00"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.qrsay.user"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/logo.png",
+        "backgroundColor": "#FF8C00"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.qrsay.user",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./src/assets/logo.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-location",
+      "expo-barcode-scanner"
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }
