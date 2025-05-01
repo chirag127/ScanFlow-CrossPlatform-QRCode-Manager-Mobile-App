@@ -17,6 +17,7 @@ import {
     HomeScreen,
     QRScannerScreen,
     RestaurantDetailScreen,
+    MenuScreen,
 } from "../screens/home";
 import * as navigationTypes from "./navigationTypes";
 
@@ -98,7 +99,7 @@ const HomeNavigator = () => {
             />
             <Stack.Screen
                 name={navigationTypes.HOME_STACK.MENU_SCREEN}
-                component={PlaceholderScreen}
+                component={MenuScreen}
                 options={{
                     title: "Menu",
                     headerBackTitle: "Restaurant",
