@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isGuest, setIsGuest] = useState(false);
     const [initializing, setInitializing] = useState(true);
 
     // Load user data from storage on mount
@@ -27,19 +28,27 @@ export const AuthProvider = ({ children }) => {
                 // Check if user is authenticated
                 const token = await AsyncStorage.getItem("customerToken");
                 const userData = await AsyncStorage.getItem("customerDetail");
+                const guestMode = await AsyncStorage.getItem("guestMode");
 
                 if (token && userData) {
                     setUser(JSON.parse(userData));
                     setIsAuthenticated(true);
+                    setIsGuest(false);
+                } else if (guestMode === "true") {
+                    setUser(null);
+                    setIsAuthenticated(false);
+                    setIsGuest(true);
                 } else {
                     setUser(null);
                     setIsAuthenticated(false);
+                    setIsGuest(false);
                 }
             } catch (err) {
                 console.error("Error loading user data:", err);
                 setError("Failed to load user data");
                 setUser(null);
                 setIsAuthenticated(false);
+                setIsGuest(false);
             } finally {
                 setLoading(false);
                 setInitializing(false);
@@ -202,12 +211,60 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    /**
+     * Continue as guest without authentication
+     * @returns {Promise<void>}
+     */
+    const continueAsGuest = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            // Store guest mode in AsyncStorage
+            await AsyncStorage.setItem("guestMode", "true");
+
+            // Set guest mode
+            setUser(null);
+            setIsAuthenticated(false);
+            setIsGuest(true);
+        } catch (err) {
+            setError(err.message || "Failed to continue as guest");
+            console.error("Guest mode error:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    /**
+     * Exit guest mode
+     * @returns {Promise<void>}
+     */
+    const exitGuestMode = async () => {
+        try {
+            setLoading(true);
+
+            // Remove guest mode from AsyncStorage
+            await AsyncStorage.removeItem("guestMode");
+
+            // Reset state
+            setUser(null);
+            setIsAuthenticated(false);
+            setIsGuest(false);
+        } catch (err) {
+            setError(err.message || "Failed to exit guest mode");
+            console.error("Exit guest mode error:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Context value
     const value = {
         user,
         loading,
         error,
         isAuthenticated,
+        isGuest,
         initializing,
         login,
         whatsappLogin,
@@ -215,6 +272,8 @@ export const AuthProvider = ({ children }) => {
         logout,
         updateProfile,
         getCurrentUser,
+        continueAsGuest,
+        exitGuestMode,
     };
 
     return (

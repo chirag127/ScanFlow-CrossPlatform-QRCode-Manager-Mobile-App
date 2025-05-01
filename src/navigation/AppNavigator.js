@@ -11,6 +11,8 @@ import {
     ForgotPasswordScreen,
     WhatsAppLoginScreen,
 } from "../screens/auth";
+import { ProfileScreen } from "../screens/profile";
+import { HomeScreen } from "../screens/home";
 
 // Create navigators
 const Stack = createNativeStackNavigator();
@@ -47,7 +49,7 @@ const HomeNavigator = () => (
     <Stack.Navigator>
         <Stack.Screen
             name="HomeScreen"
-            component={PlaceholderScreen}
+            component={HomeScreen}
             options={{ title: "Home" }}
         />
         <Stack.Screen
@@ -139,7 +141,7 @@ const ProfileNavigator = () => (
     <Stack.Navigator>
         <Stack.Screen
             name="ProfileScreen"
-            component={PlaceholderScreen}
+            component={ProfileScreen}
             options={{ title: "Profile" }}
         />
         <Stack.Screen
@@ -210,7 +212,7 @@ const LoadingScreen = () => (
  * Root Navigator - Handles authentication state
  */
 const RootNavigator = () => {
-    const { isAuthenticated, initializing } = useAuth();
+    const { isAuthenticated, isGuest, initializing } = useAuth();
 
     if (initializing) {
         return <LoadingScreen />;
@@ -218,7 +220,7 @@ const RootNavigator = () => {
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {isAuthenticated ? (
+            {isAuthenticated || isGuest ? (
                 <Stack.Screen name="Main" component={MainNavigator} />
             ) : (
                 <Stack.Screen name="Auth" component={AuthNavigator} />
