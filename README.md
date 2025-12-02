@@ -1,111 +1,99 @@
-# QRSay-User-Mobile-Frontend-React-Native-Expo-App
+# QRSay: QR Code Interaction Mobile App
 
-**QRSay User Mobile Frontend provides a seamless, intuitive experience for scanning and interacting with QR codes. Built with React Native and Expo, it offers a robust, cross-platform mobile application. Enjoy rapid development and a smooth, secure user journey for all your QR code needs! 🚀📱✨**
+[![Build Status](https://img.shields.io/github/actions/workflow/ci.yml?style=flat-square&logo=github&label=Build&user=chirag127&repo=QRSay-QR-Code-Interaction-Mobile-App)](https://github.com/chirag127/QRSay-QR-Code-Interaction-Mobile-App/actions/workflows/ci.yml)
+[![Code Coverage](https://img.shields.io/codecov/c/github/chirag127/QRSay-QR-Code-Interaction-Mobile-App?style=flat-square&logo=codecov&label=Coverage)](https://codecov.io/gh/chirag127/QRSay-QR-Code-Interaction-Mobile-App)
+[![Tech Stack](https://img.shields.io/badge/Tech%20Stack-React%20Native%2C%20Expo%2C%20TS-blue?style=flat-square&logo=typescript&logo=react&logo=expo)](https://github.com/chirag127/QRSay-QR-Code-Interaction-Mobile-App)
+[![Lint/Format](https://img.shields.io/badge/Lint%2FFormat-Biome-green?style=flat-square&logo=biome)](https://github.com/chirag127/QRSay-QR-Code-Interaction-Mobile-App)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey?style=flat-square)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![GitHub Stars](https://img.shields.io/github/stars/chirag127/QRSay-QR-Code-Interaction-Mobile-App?style=flat-square&label=Stars)](https://github.com/chirag127/QRSay-QR-Code-Interaction-Mobile-App/stargazers)
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-informational)
 
----
+🌟 Star this Repo
+
+## QRSay: Your Mobile QR Code Companion
+
+Scan, manage, and interact with QR codes seamlessly on iOS and Android. QRSay provides a modern, high-performance mobile experience for rapid QR code engagement.
+
+## Architecture
+
+
++ QRSay/
+├── App.tsx          # Main entry point
+├── components/     # Reusable UI components
+├── screens/        # App screens (Scanner, History, etc.)
+├── utils/          # Utility functions (QR code parsing, etc.)
+├── models/         # Data models (QR code data)
+├── store/          # State management (Zustand)
+├── navigation/     # Navigation configuration (Expo Router)
+├── config/         # Configuration files
+├── assets/         # Images, fonts, etc.
+└── app.json         # Expo project configuration
+
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Running the App](#running-the-app)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Support](#support)
-
----
-
-## Introduction
-
-This repository hosts the user-facing mobile frontend for the QRSay platform, developed using React Native and Expo. It's designed to deliver a modern, performant, and intuitive interface for scanning, generating, and managing QR codes, ensuring a delightful user experience across iOS and Android devices.
+-   [Features](#features)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Contributing](#contributing)
+-   [License](#license)
 
 ## Features
 
--   **QR Code Scanning:** Rapid and accurate scanning of various QR code types.
--   **User Dashboard:** Personalized dashboard for managing scanned codes and related data.
--   **Cross-Platform Compatibility:** Seamless experience on both iOS and Android.
--   **Intuitive UI/UX:** Clean and easy-to-navigate design.
--   **Robust Error Handling:** Resilient against network issues and invalid inputs.
+-   QR Code Scanning
+-   QR Code History
+-   QR Code Management
+-   Cross-Platform Support (iOS & Android)
+-   Fast Performance
 
-## Getting Started
+## Installation
 
-Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+bash
+git clone https://github.com/chirag127/QRSay-QR-Code-Interaction-Mobile-App.git
+cd QRSay-QR-Code-Interaction-Mobile-App
+npm install
 
-### Prerequisites
 
-Ensure you have the following installed:
+## Usage
 
--   Node.js (LTS recommended)
--   npm or yarn
--   Expo CLI (`npm install -g expo-cli` or `yarn global add expo-cli`)
--   Git
-
-### Installation
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/QRSay-User-Mobile-Frontend-React-Native-Expo-App.git
-    cd QRSay-User-Mobile-Frontend-React-Native-Expo-App
-    ```
-
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    # or
-    yarn install
-    ```
-
-### Running the App
-
-1.  **Start the Expo development server:**
-    ```bash
-    expo start
-    ```
-
-2.  **Open the app:**
-    *   Scan the QR code displayed in your terminal or browser with the Expo Go app on your mobile device.
-    *   Press `a` to open on an Android emulator/device.
-    *   Press `i` to open on an iOS simulator/device (macOS only).
-    *   Press `w` to open in a web browser (for development only, not the primary target).
-
-## Project Structure
-
-The project follows a standard React Native / Expo architecture, prioritizing modularity and separation of concerns.
-
-```
-.
-├── src/                      # Main application source code
-│   ├── components/           # Reusable UI components
-│   ├── features/             # Feature-specific modules (e.g., auth, qr-scanner)
-│   ├── navigation/           # Navigation stack and routes
-│   ├── screens/              # Top-level screen components
-│   ├── services/             # API calls, utility functions
-│   └── utils/                # Helper functions and constants
-├── assets/                   # Static assets (images, fonts)
-├── App.js                    # Main app entry point
-├── app.json                  # Expo configuration
-├── babel.config.js           # Babel configuration
-├── metro.config.js           # Metro bundler configuration
-├── package.json              # Project dependencies and scripts
-└── README.md                 # This file
-```
+1.  Run `npm start` to start the Expo development server.
+2.  Scan the QR code with your mobile device or use an emulator.
+3.  Use the app to scan, manage, and interact with QR codes.
 
 ## Contributing
 
-We welcome contributions! Please read our `CONTRIBUTING.md` (if available) for details on our code of conduct, and the process for submitting pull requests to us. For major changes, please open an issue first to discuss what you would like to change.
+See [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md) for contribution guidelines.
 
 ## License
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+This project is licensed under the [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license.
 
-## Support
+<details>
+<summary>🤖 AI Agent Directives</summary>
 
-If you find this project useful or interesting, please consider giving it a **Star ⭐** on GitHub! Your support helps us to continue developing and improving this project. Thank you!
+**Tech Stack:**
+
+*   **Language:** TypeScript
+*   **Framework:** React Native, Expo
+*   **State Management:** Zustand
+*   **Navigation:** Expo Router, React Navigation
+*   **Linting/Formatting:** Biome
+*   **Testing:** Vitest, Playwright (E2E)
+
+**Architectural Patterns:**
+
+*   Feature-Sliced Design (FSD)
+*   Component-Based Architecture
+
+**Verification Commands:**
+
+bash
+npm run lint
+npm run test
+npm run e2e
+
+
+**Purpose:**
+
+This section defines the technical specifications of this project and ensures alignment of future AI Agents.
+</details>
